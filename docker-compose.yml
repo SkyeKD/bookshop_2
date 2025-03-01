@@ -23,6 +23,7 @@ services:
       start_period: 30s
 
   backend:
+    image: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -41,6 +42,7 @@ services:
       - "8800:8800"
 
   frontend:
+    image: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
