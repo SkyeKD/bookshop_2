@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-  
   mysql:
     image: mysql:5.7
     platform: linux/amd64
@@ -23,20 +22,30 @@ services:
       retries: 5
       start_period: 30s
 
+  backend:
+    image: ${ECR_BACKEND_IMAGE}
+    container_name: backend_service
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: temporary_password
+      DB_NAME: golinksdb
+    ports:
+      - "8800:8800"
+
   frontend:
     image: ${ECR_FRONTEND_IMAGE}
     container_name: frontend_service
+    restart: always
+    depends_on:
+      - backend
     ports:
       - "3000:5173"
 
-    backend:
-      image: ${ECR_BACKEND_IMAGE}
-      container_name: backend_service
-      depends_on:
-        mysql:
-          condition: service_healthy
-      ports:
-        - "8800:8800"
-    
 volumes:
   mysql_data:
