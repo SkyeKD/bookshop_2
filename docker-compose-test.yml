@@ -1,6 +1,27 @@
 version: "3.8"
 
 services:
+  
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: golinksdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: temporary_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "--password=temporary_password" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
 
   frontend:
     image: ${ECR_FRONTEND_IMAGE}
@@ -17,26 +38,5 @@ services:
       ports:
         - "8800:8800"
     
-    mysql:
-      image: mysql:5.7
-      platform: linux/amd64
-      container_name: mysql_db
-      restart: always
-      environment:
-        MYSQL_ROOT_PASSWORD: root_password
-        MYSQL_DATABASE: golinksdb
-        MYSQL_USER: user
-        MYSQL_PASSWORD: temporary_password
-      ports:
-        - "3307:3306"
-      volumes:
-        - mysql_data:/var/lib/mysql
-        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      healthcheck:
-        test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "--password=temporary_password" ]
-        interval: 10s
-        retries: 5
-        start_period: 30s
-
 volumes:
   mysql_data:
