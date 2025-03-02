@@ -39,6 +39,10 @@ services:
       - "8800:8800"
 
   frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_BOOK_APP_API_BASE_URL=https://bestkexin.live/api  
     image: ${ECR_FRONTEND_IMAGE}
     container_name: frontend_service
     restart: always
@@ -46,6 +50,8 @@ services:
       - backend
     ports:
       - "3000:3000"
+    environment:
+      VITE_BOOK_APP_API_BASE_URL: https://bestkexin.live/api
 
 volumes:
   mysql_data:
