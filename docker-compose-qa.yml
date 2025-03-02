@@ -1,6 +1,10 @@
 
 services:
   frontend:
+    build:
+      context: ./frontend
+      args:
+        - VITE_BOOK_APP_API_BASE_URL=https://bestkexin.live/api  #  pass to `Dockerfile`
     image: ${ECR_FRONTEND_IMAGE}
     container_name: frontend
     ports:

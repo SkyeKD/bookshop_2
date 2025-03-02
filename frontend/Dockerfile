@@ -5,6 +5,10 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
+ARG VITE_BOOK_APP_API_BASE_URL
+ENV VITE_BOOK_APP_API_BASE_URL=$VITE_BOOK_APP_API_BASE_URL
+
+
 COPY . .
 
 RUN npm run build
