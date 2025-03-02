@@ -15,7 +15,7 @@ const db = mysql.createConnection({
 app.use(express.json())
 
 const corsOptions = {
-  origin: "https://bestkexin.live/" || "http://localhost:3000",
+  origin: ["https://bestkexin.live", "http://localhost:3000"],
   methods: "GET,POST,PUT,DELETE"
 };
 app.use(cors(corsOptions))

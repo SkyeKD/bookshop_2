@@ -12,7 +12,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: temporary_password
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -52,6 +52,8 @@ services:
       - backend
     ports:
       - "3000:3000"
+    environment:
+      VITE_BOOK_APP_API_BASE_URL: https://localhost:8800
 
 volumes:
   mysql_data:
