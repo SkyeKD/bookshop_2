@@ -1,26 +1,30 @@
 import express  from "express";
-import mysql from "mysql";
+import mysql from "mysql2";
 import cors from "cors";
 
 const app = express();
 
 const db = mysql.createConnection({
-    host: "mysql",
-    user: "user",
-    password: "temporary_password",
-    database: "golinksdb",
-    port: 3306
+  host: process.env.DB_HOST || "mysql",
+  user: process.env.DB_USER || "user",
+  password: process.env.DB_PASSWORD || "temporary_password",
+  database: process.env.DB_NAME || "golinksdb",
+  port: 3306
 })
 
-app.use(express.json())//return json data using the api server postman
+app.use(express.json())
 
-app.use(cors())
+const corsOptions = {
+  origin: "https://bestkexin.live/" || "http://localhost:3000",
+  methods: "GET,POST,PUT,DELETE"
+};
+app.use(cors(corsOptions))
 
 app.get("/", (req,res)=>{
     res.json("Hello World from the backend!!!")
 })
 
-//postman -> get method  http://localhost:8800/books
+
 app.get("/books", (req,res)=>{
     const query = "SELECT * FROM books"
     db.query(query, (err,data)=>{
@@ -30,14 +34,6 @@ app.get("/books", (req,res)=>{
   })
 
 
-  //postman ---> post method
-  //json body bellow
-  //----------------------------- http://localhost:8800/books
-  //{
-// "title": "title from client",
-// "description": "description from client",
-// "cover": "cover from client"
-// }
 
   app.post("/books", (req,res)=>{
     const query = "INSERT INTO books (`title`, `description`, `price`, `cover`) VALUES (?)"

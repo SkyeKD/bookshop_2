@@ -13,5 +13,4 @@ COPY . .
 
 EXPOSE 8800
 
-# 运行后端服务器
 CMD ["node", "index.js"]

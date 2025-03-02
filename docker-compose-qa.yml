@@ -1,0 +1,32 @@
+
+services:
+  frontend:
+    image: ${ECR_FRONTEND_IMAGE}
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_BOOK_APP_API_BASE_URL: https://bestkexin.live/api
+    networks:
+      - app-network
+    restart: always
+
+  backend:
+    image: ${ECR_BACKEND_IMAGE}
+    container_name: backend
+    ports:
+      - "8800:8800"
+    environment:
+      DB_HOST: ${DB_HOST}  # RDS endpoint
+      DB_USER: ${DB_USER}  
+      DB_PORT: 3306
+      DB_PASSWORD: ${DB_PASSWORD}      
+      DB_NAME: ${DB_NAME}
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+             
