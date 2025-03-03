@@ -52,8 +52,6 @@ services:
       - backend
     ports:
       - "3000:3000"
-    environment:
-      VITE_BOOK_APP_API_BASE_URL: https://localhost:8800
 
 volumes:
   mysql_data:
